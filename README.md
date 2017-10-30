@@ -1,5 +1,5 @@
-#Experience exchange
-##Course work for Samsung Android Laboratory
+# Experience exchange
+## Course work for Samsung Android Laboratory
 
 Server part of application
 
