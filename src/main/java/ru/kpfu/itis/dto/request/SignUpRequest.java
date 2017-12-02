@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import ru.kpfu.itis.converter.SharedField;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -19,18 +20,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class SignUpRequest {
 
+    @SharedField(name = "login")
     @JsonProperty("login")
     private String login;
 
+    @SharedField(name = "password")
     @JsonProperty("password")
     private String password;
 
+    @SharedField(name = "email")
     @JsonProperty("email")
     private String email;
 
+    @SharedField(name = "firstname")
     @JsonProperty("firstname")
     private String firstname;
 
+    @SharedField(name = "lastname")
     @JsonProperty("lastname")
     private String lastname;
 

@@ -2,6 +2,7 @@ package ru.kpfu.itis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.converter.AnnotationConverter;
 import ru.kpfu.itis.dto.request.SignInRequest;
 import ru.kpfu.itis.dto.request.SignUpRequest;
 import ru.kpfu.itis.dto.response.SignUpResponse;
@@ -29,11 +30,7 @@ public class AuthService {
     }
 
     public SignUpResponse signUp(SignUpRequest request) {
-        User newUser = new User(request.getLogin(),
-                request.getPassword(),
-                request.getEmail(),
-                request.getFirstname(),
-                request.getLastname());
+        User newUser = AnnotationConverter.convert(request, User.class);
         newUser = userRepo.save(newUser);
 
         String token = tokenGenerator.generateToken();

@@ -3,10 +3,12 @@ package ru.kpfu.itis.model;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import ru.kpfu.itis.converter.SharedField;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -16,18 +18,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @SharedField(name = "login")
     @Column(unique = true, nullable = false)
     private String login;
 
+    @SharedField(name = "password")
     @Column(nullable = false)
     private String password;
 
+    @SharedField(name = "email")
     @Column(unique = true, nullable = false)
     private String email;
 
+    @SharedField(name = "firstname")
     @Column(nullable = false)
     private String firstname;
 
+    @SharedField(name = "lastname")
     @Column(nullable = false)
     private String lastname;
 
@@ -213,5 +220,46 @@ public class User {
 
     public void setCreated(int created) {
         this.created = created;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Double.compare(user.karma, karma) == 0 &&
+                comments == user.comments &&
+                likes == user.likes &&
+                finished == user.finished &&
+                created == user.created &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(firstname, user.firstname) &&
+                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(age, user.age) &&
+                Objects.equals(gender, user.gender) &&
+                Objects.equals(birthday, user.birthday) &&
+                Objects.equals(country, user.country) &&
+                Objects.equals(city, user.city) &&
+                Objects.equals(about, user.about);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, email, firstname, lastname, age, gender, birthday, country, city, about, karma, comments, likes, finished, created);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
     }
 }
