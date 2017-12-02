@@ -6,7 +6,7 @@ import ru.kpfu.itis.converter.AnnotationConverter;
 import ru.kpfu.itis.dto.request.SignInRequest;
 import ru.kpfu.itis.dto.request.SignUpRequest;
 import ru.kpfu.itis.dto.response.SignUpResponse;
-import ru.kpfu.itis.exceptions.InvalidCredentialsException;
+import ru.kpfu.itis.exceptions.shared.InvalidCredentialsException;
 import ru.kpfu.itis.model.Token;
 import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.repo.TokenRepo;

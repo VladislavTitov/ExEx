@@ -1,4 +1,4 @@
-package ru.kpfu.itis.exceptions;
+package ru.kpfu.itis.exceptions.local;
 
 public class TypeMismatchException extends RuntimeException{
 

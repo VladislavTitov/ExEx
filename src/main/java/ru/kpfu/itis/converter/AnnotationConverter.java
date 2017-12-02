@@ -1,7 +1,7 @@
 package ru.kpfu.itis.converter;
 
 import org.jetbrains.annotations.Nullable;
-import ru.kpfu.itis.exceptions.TypeMismatchException;
+import ru.kpfu.itis.exceptions.local.TypeMismatchException;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
