@@ -5,7 +5,9 @@ import ru.kpfu.itis.exceptions.local.TypeMismatchException;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AnnotationConverter {
 
@@ -47,6 +49,10 @@ public class AnnotationConverter {
             }
         }
         return toInstance;
+    }
+
+    public static <T> List<T> convertArray(List<?> from, Class<T> to) {
+        return from.stream().map(o -> AnnotationConverter.convert(o, to)).collect(Collectors.toList());
     }
 
 }

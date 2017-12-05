@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -74,6 +75,13 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Token> tokens;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_interests",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id"))
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    private List<Interest> interests;
 
     public User() {
     }
@@ -220,6 +228,24 @@ public class User {
 
     public void setCreated(int created) {
         this.created = created;
+    }
+
+    public List<Interest> getInterests() {
+        return interests;
+    }
+
+    public void addInterest(Interest interest) {
+        if (this.interests == null) {
+            this.interests = new ArrayList<>();
+        }
+        interests.add(interest);
+    }
+
+    public void addInterests(List<Interest> interests) {
+        if (this.interests == null) {
+            this.interests = new ArrayList<>();
+        }
+        this.interests.addAll(interests);
     }
 
     @Override

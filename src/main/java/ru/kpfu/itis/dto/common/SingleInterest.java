@@ -1,4 +1,4 @@
-package ru.kpfu.itis.dto.response;
+package ru.kpfu.itis.dto.common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import ru.kpfu.itis.converter.SharedField;
         "name",
         "percentage"
 })
-public class SingleInterestResponse {
+public class SingleInterest {
 
     @SharedField(name = "id")
     @JsonProperty("id")
@@ -37,7 +37,7 @@ public class SingleInterestResponse {
      * No args constructor for use in serialization
      *
      */
-    public SingleInterestResponse() {
+    public SingleInterest() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class SingleInterestResponse {
      * @param percentage
      * @param name
      */
-    public SingleInterestResponse(Long id, String name, Double percentage) {
+    public SingleInterest(Long id, String name, Double percentage) {
         this.id = id;
         this.name = name;
         this.percentage = percentage;
