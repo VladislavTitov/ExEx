@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.dto.request.SignInRequest;
 import ru.kpfu.itis.dto.request.SignUpRequest;
 import ru.kpfu.itis.dto.response.Response;
+import ru.kpfu.itis.dto.response.SignInResponse;
 import ru.kpfu.itis.dto.response.SignUpResponse;
 import ru.kpfu.itis.service.AuthService;
 
@@ -26,9 +27,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Response<String> login(@RequestBody SignInRequest request) {
-        String token = authService.signIn(request);
-        return new Response<>(200, token, null);
+    public Response<SignInResponse> login(@RequestBody SignInRequest request) {
+        SignInResponse response = authService.signIn(request);
+        return new Response<>(200, response, null);
     }
+
+    /*@GetMapping("/users")
+    public Response<>*/
 
 }

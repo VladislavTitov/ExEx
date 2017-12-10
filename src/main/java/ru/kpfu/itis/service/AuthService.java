@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.kpfu.itis.converter.AnnotationConverter;
 import ru.kpfu.itis.dto.request.SignInRequest;
 import ru.kpfu.itis.dto.request.SignUpRequest;
+import ru.kpfu.itis.dto.response.SignInResponse;
 import ru.kpfu.itis.dto.response.SignUpResponse;
 import ru.kpfu.itis.exceptions.shared.InvalidCredentialsException;
 import ru.kpfu.itis.model.Token;
@@ -42,7 +43,7 @@ public class AuthService {
         return response;
     }
 
-    public String signIn(SignInRequest request) throws InvalidCredentialsException {
+    public SignInResponse signIn(SignInRequest request) throws InvalidCredentialsException {
         User foundUser = userRepo.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if (foundUser == null) {
             throw new InvalidCredentialsException("Login or password is incorrect!");
@@ -52,8 +53,8 @@ public class AuthService {
         Token newToken = new Token(token);
         newToken.setOwner(foundUser);
         tokenRepo.save(newToken);
-
-        return token;
+        SignInResponse response = new SignInResponse(foundUser.getId(), token);
+        return response;
     }
 
 }
