@@ -34,7 +34,7 @@ public class InterestsService {
     }
 
     public void chooseInterests(Long userId, List<SingleInterest> interests) {
-        if (interests == null) {
+        if (interests == null || interests.isEmpty()) {
             throw new NoContentException("You didn't choose any interest");
         }
 
