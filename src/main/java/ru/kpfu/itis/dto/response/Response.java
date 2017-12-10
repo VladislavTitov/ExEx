@@ -36,6 +36,12 @@ public class Response<T> {
     public Response() {
     }
 
+    public Response(Integer status, T result) {
+        this.status = status;
+        this.result = result;
+        this.error = null;
+    }
+
     /**
      *
      * @param result

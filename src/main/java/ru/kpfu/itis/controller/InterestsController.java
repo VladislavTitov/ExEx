@@ -1,11 +1,11 @@
 package ru.kpfu.itis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.kpfu.itis.converter.AnnotationConverter;
+import ru.kpfu.itis.dto.request.ChooseInterestsRequest;
 import ru.kpfu.itis.dto.response.Response;
-import ru.kpfu.itis.dto.response.SingleInterestResponse;
+import ru.kpfu.itis.dto.common.SingleInterest;
 import ru.kpfu.itis.service.InterestsService;
 
 import java.util.List;
@@ -22,8 +22,14 @@ public class InterestsController {
     }
 
     @GetMapping("/interests")
-    public Response<List<SingleInterestResponse>> getInterests() {
+    public Response<List<SingleInterest>> getInterests() {
         return new Response<>(200, interestsService.getInterests(), null);
+    }
+
+    @PostMapping("/users/{user_id}/interests")
+    public Response<Object> chooseInterests(@PathVariable("user_id") Long userId, @RequestBody ChooseInterestsRequest request) {
+        interestsService.chooseInterests(userId, request.getInterests());
+        return new Response<>(200, null, null);
     }
 
 }

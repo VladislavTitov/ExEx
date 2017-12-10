@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -38,42 +39,60 @@ public class User {
     @Column(nullable = false)
     private String lastname;
 
+    @SharedField(name = "age")
     private Integer age;
 
+    @SharedField(name = "gender")
     private String gender;
 
+    @SharedField(name = "birthday")
     private Date birthday;
 
+    @SharedField(name = "country")
     private String country;
 
+    @SharedField(name = "city")
     private String city;
 
+    @SharedField(name = "about")
     @Column(columnDefinition = "TEXT")
     private String about;
 
+    @SharedField(name = "karma")
     @Column(nullable = false)
     @ColumnDefault(value = "0.0")
-    private double karma;
+    private Double karma = 0.0;
 
+    @SharedField(name = "comments")
     @Column(nullable = false)
     @ColumnDefault(value = "0")
-    private int comments;
+    private Integer comments = 0;
 
+    @SharedField(name = "likes")
     @Column(nullable = false)
     @ColumnDefault(value = "0")
-    private int likes;
+    private Integer likes = 0;
 
+    @SharedField(name = "finished")
     @Column(nullable = false)
     @ColumnDefault(value = "0")
-    private int finished;
+    private Integer finished = 0;
 
+    @SharedField(name = "created")
     @Column(nullable = false)
     @ColumnDefault(value = "0")
-    private int created;
+    private Integer created = 0;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Token> tokens;
+
+    @ManyToMany
+    @JoinTable(name = "users_interests",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id"))
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    private List<Interest> interests;
 
     public User() {
     }
@@ -222,17 +241,30 @@ public class User {
         this.created = created;
     }
 
+    public List<Interest> getInterests() {
+        return interests;
+    }
+
+    public void addInterest(Interest interest) {
+        if (this.interests == null) {
+            this.interests = new ArrayList<>();
+        }
+        interests.add(interest);
+    }
+
+    public void addInterests(List<Interest> interests) {
+        if (this.interests == null) {
+            this.interests = new ArrayList<>();
+        }
+        this.interests.addAll(interests);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Double.compare(user.karma, karma) == 0 &&
-                comments == user.comments &&
-                likes == user.likes &&
-                finished == user.finished &&
-                created == user.created &&
-                Objects.equals(id, user.id) &&
+        return Objects.equals(id, user.id) &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(email, user.email) &&
@@ -243,7 +275,12 @@ public class User {
                 Objects.equals(birthday, user.birthday) &&
                 Objects.equals(country, user.country) &&
                 Objects.equals(city, user.city) &&
-                Objects.equals(about, user.about);
+                Objects.equals(about, user.about) &&
+                Objects.equals(karma, user.karma) &&
+                Objects.equals(comments, user.comments) &&
+                Objects.equals(likes, user.likes) &&
+                Objects.equals(finished, user.finished) &&
+                Objects.equals(created, user.created);
     }
 
     @Override
