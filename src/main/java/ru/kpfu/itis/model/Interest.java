@@ -26,7 +26,7 @@ public class Interest {
     @JoinTable(name = "users_interests",
             joinColumns = @JoinColumn(name = "interest_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<User> users;
 
     public Long getId() {
