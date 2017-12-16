@@ -94,6 +94,16 @@ public class User {
     @LazyCollection(value = LazyCollectionOption.FALSE)
     private List<Interest> interests;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Course> createdCourses;
+
+    @ManyToMany
+    @JoinTable(name = "users_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> relativeCourses;
+
     public User() {
     }
 
@@ -241,8 +251,48 @@ public class User {
         this.created = created;
     }
 
+    public void incrementCreated() {
+        this.created += 1;
+    }
+
     public List<Interest> getInterests() {
         return interests;
+    }
+
+    public List<Course> getCreatedCourses() {
+        return createdCourses;
+    }
+
+    public void addCreatedCourse(Course course) {
+        if (createdCourses == null) {
+            createdCourses = new ArrayList<>();
+        }
+        createdCourses.add(course);
+    }
+
+    public void addCreatedCorses(List<Course> courses) {
+        if (createdCourses == null) {
+            createdCourses = new ArrayList<>();
+        }
+        createdCourses.addAll(courses);
+    }
+
+    public List<Course> getRelativeCourses() {
+        return relativeCourses;
+    }
+
+    public void addRelativeCourse(Course course) {
+        if (relativeCourses == null) {
+            relativeCourses = new ArrayList<>();
+        }
+        relativeCourses.add(course);
+    }
+
+    public void addRelativeCourses(List<Course> courses) {
+        if (relativeCourses == null) {
+            relativeCourses = new ArrayList<>();
+        }
+        relativeCourses.addAll(courses);
     }
 
     public void addInterest(Interest interest) {
