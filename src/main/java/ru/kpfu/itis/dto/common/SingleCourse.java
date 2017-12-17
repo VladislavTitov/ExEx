@@ -40,6 +40,10 @@ public class SingleCourse {
     @JsonProperty("students_number")
     private Integer studentsNumber;
 
+    @SharedField(name = "lessons_number")
+    @JsonProperty("lessons_number")
+    private Integer lessonsNumber;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -57,12 +61,13 @@ public class SingleCourse {
      * @param title
      * @param studentsNumber
      */
-    public SingleCourse(String title, String summary, String cover, Integer studentsNumber) {
+    public SingleCourse(String title, String summary, String cover, Integer studentsNumber, Integer lessonsNumber) {
         super();
         this.title = title;
         this.summary = summary;
         this.cover = cover;
         this.studentsNumber = studentsNumber;
+        this.lessonsNumber = lessonsNumber;
     }
 
     @JsonProperty("id")
@@ -113,6 +118,14 @@ public class SingleCourse {
     @JsonProperty("students_number")
     public void setStudentsNumber(Integer studentsNumber) {
         this.studentsNumber = studentsNumber;
+    }
+
+    public Integer getLessonsNumber() {
+        return lessonsNumber;
+    }
+
+    public void setLessonsNumber(Integer lessonsNumber) {
+        this.lessonsNumber = lessonsNumber;
     }
 
     @JsonAnyGetter
