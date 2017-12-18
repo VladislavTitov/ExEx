@@ -15,6 +15,7 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
 
+    @SharedField(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -84,7 +85,7 @@ public class User {
     private Integer created = 0;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @LazyCollection(LazyCollectionOption.TRUE)
     private List<Token> tokens;
 
     @ManyToMany
@@ -99,10 +100,18 @@ public class User {
     private List<Course> createdCourses;
 
     @ManyToMany
-    @JoinTable(name = "users_courses",
+    @JoinTable(name = "students_courses",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Course> relativeCourses;
+
+    @ManyToMany
+    @JoinTable(name = "likers_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Course> favoriteCourses;
 
     public User() {
     }
@@ -268,13 +277,15 @@ public class User {
             createdCourses = new ArrayList<>();
         }
         createdCourses.add(course);
+        created++;
     }
 
-    public void addCreatedCorses(List<Course> courses) {
+    public void addCreatedCourses(List<Course> courses) {
         if (createdCourses == null) {
             createdCourses = new ArrayList<>();
         }
         createdCourses.addAll(courses);
+        created += courses.size();
     }
 
     public List<Course> getRelativeCourses() {
@@ -295,6 +306,13 @@ public class User {
         relativeCourses.addAll(courses);
     }
 
+    public void removeRelativeCourse(Course course) {
+        if (relativeCourses == null) {
+            return;
+        }
+        relativeCourses.remove(course);
+    }
+
     public void addInterest(Interest interest) {
         if (this.interests == null) {
             this.interests = new ArrayList<>();
@@ -307,6 +325,30 @@ public class User {
             this.interests = new ArrayList<>();
         }
         this.interests.addAll(interests);
+    }
+
+    public List<Course> getFavoriteCourses() {
+        return favoriteCourses;
+    }
+
+    public void setFavoriteCourses(List<Course> favoriteCourses) {
+        this.favoriteCourses = favoriteCourses;
+    }
+
+    public void addFavoriteCourse(Course favoriteCourse) {
+        if (favoriteCourses == null) {
+            favoriteCourses = new ArrayList<>();
+        }
+        favoriteCourses.add(favoriteCourse);
+        likes++;
+    }
+
+    public void removeFavoriteCourse(Course favoriteCourse) {
+        if (favoriteCourses == null) {
+            return;
+        }
+        favoriteCourses.remove(favoriteCourse);
+        likes--;
     }
 
     @Override

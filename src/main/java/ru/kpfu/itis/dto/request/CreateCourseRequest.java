@@ -14,7 +14,8 @@ import ru.kpfu.itis.converter.SharedField;
 @JsonPropertyOrder({
         "title",
         "summary",
-        "cover"
+        "cover",
+        "interest_id"
 })
 public class CreateCourseRequest {
 
@@ -29,6 +30,10 @@ public class CreateCourseRequest {
     @SharedField(name = "cover")
     @JsonProperty("cover")
     private String cover;
+
+    @SharedField(name = "interest_id")
+    @JsonProperty("interest_id")
+    private Long interestId;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -81,6 +86,14 @@ public class CreateCourseRequest {
     @JsonProperty("cover")
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
     }
 
     @JsonAnyGetter

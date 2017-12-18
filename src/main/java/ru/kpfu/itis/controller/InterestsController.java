@@ -26,6 +26,12 @@ public class InterestsController {
         return new Response<>(200, interestsService.getInterests(), null);
     }
 
+    @GetMapping("/users/{user_id}/interests")
+    public Response<Object> getUserInterests(@PathVariable("user_id") Long userId) {
+        List<SingleInterest> response = interestsService.getUserInterests(userId);
+        return new Response<>(200, response, null);
+    }
+
     @PostMapping("/users/{user_id}/interests")
     public Response<Object> chooseInterests(@PathVariable("user_id") Long userId, @RequestBody ChooseInterestsRequest request) {
         interestsService.chooseInterests(userId, request.getInterests());

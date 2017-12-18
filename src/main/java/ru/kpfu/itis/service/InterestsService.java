@@ -33,6 +33,18 @@ public class InterestsService {
         return interestsDto;
     }
 
+    public List<SingleInterest> getUserInterests(Long userId) {
+        Optional<User> mayBeUser = userRepo.findById(userId);
+        if (!mayBeUser.isPresent()) {
+            throw new NoSuchIdException("User with id = " + userId + " don't exist!");
+        }
+        User user = mayBeUser.get();
+        List<SingleInterest> response = AnnotationConverter.convertArray(user.getInterests(), SingleInterest.class);
+        return response;
+    }
+
+
+    //TODO change percentage
     public void chooseInterests(Long userId, List<SingleInterest> interests) {
         if (interests == null || interests.isEmpty()) {
             throw new NoContentException("You didn't choose any interest");

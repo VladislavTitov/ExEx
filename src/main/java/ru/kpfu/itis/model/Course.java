@@ -5,7 +5,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "courses")
@@ -27,6 +29,10 @@ public class Course {
     @SharedField(name = "cover")
     private String cover;
 
+    @SharedField(name = "interest_id")
+    @Column(name = "interest_id")
+    private Long interestId;
+
     @SharedField(name = "students_number")
     @Column(name = "students_number", nullable = false)
     private Integer studentsNumber = 0;
@@ -35,14 +41,26 @@ public class Course {
     @Column(name = "lessons_number", nullable = false)
     private Integer lessonsNumber = 0;
 
+    @SharedField(name = "likers_number")
+    @Column(name = "likers_number", nullable = false)
+    private Integer likersNumber = 0;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
 
     @ManyToMany
-    @JoinTable(name = "users_courses",
+    @JoinTable(name = "likers_courses",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<User> likers;
+
+    @ManyToMany
+    @JoinTable(name = "students_courses",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> students;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
@@ -94,6 +112,14 @@ public class Course {
         this.cover = cover;
     }
 
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
+    }
+
     public Integer getStudentsNumber() {
         return studentsNumber;
     }
@@ -122,6 +148,22 @@ public class Course {
         this.students = students;
     }
 
+    public void addStudent(User student) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+        students.add(student);
+        studentsNumber++;
+    }
+
+    public void removeStudent(User student) {
+        if (students == null) {
+            return;
+        }
+        students.remove(student);
+        studentsNumber--;
+    }
+
     public List<Lesson> getLessons() {
         return lessons;
     }
@@ -140,5 +182,55 @@ public class Course {
 
     public void incrementLessonsNumber() {
         this.lessonsNumber++;
+    }
+
+    public void decrementLessonsNumber() {
+        this.lessonsNumber--;
+    }
+
+    public List<User> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(List<User> likers) {
+        this.likers = likers;
+    }
+
+    public void addLiker(User liker) {
+        if (likers == null) {
+            likers = new ArrayList<>();
+        }
+        likers.add(liker);
+        likersNumber++;
+    }
+
+    public void removeLiker(User liker) {
+        if (likers == null) {
+            return;
+        }
+        likers.remove(liker);
+        likersNumber--;
+    }
+
+    public Integer getLikersNumber() {
+        return likersNumber;
+    }
+
+    public void setLikersNumber(Integer likersNumber) {
+        this.likersNumber = likersNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }

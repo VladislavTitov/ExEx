@@ -16,6 +16,7 @@ import ru.kpfu.itis.converter.SharedField;
         "title",
         "summary",
         "cover",
+        "interest_id",
         "students_number"
 })
 public class SingleCourse {
@@ -36,6 +37,10 @@ public class SingleCourse {
     @JsonProperty("cover")
     private String cover;
 
+    @SharedField(name = "interest_id")
+    @JsonProperty("interest_id")
+    private Long interestId;
+
     @SharedField(name = "students_number")
     @JsonProperty("students_number")
     private Integer studentsNumber;
@@ -43,6 +48,10 @@ public class SingleCourse {
     @SharedField(name = "lessons_number")
     @JsonProperty("lessons_number")
     private Integer lessonsNumber;
+
+    @SharedField(name = "likers_number")
+    @JsonProperty("likers_number")
+    private Integer likersNumber;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -110,6 +119,14 @@ public class SingleCourse {
         this.cover = cover;
     }
 
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
+    }
+
     @JsonProperty("students_number")
     public Integer getStudentsNumber() {
         return studentsNumber;
@@ -126,6 +143,14 @@ public class SingleCourse {
 
     public void setLessonsNumber(Integer lessonsNumber) {
         this.lessonsNumber = lessonsNumber;
+    }
+
+    public Integer getLikersNumber() {
+        return likersNumber;
+    }
+
+    public void setLikersNumber(Integer likersNumber) {
+        this.likersNumber = likersNumber;
     }
 
     @JsonAnyGetter
