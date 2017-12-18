@@ -27,14 +27,24 @@ public class CourseController {
     }
 
     @GetMapping("{user_id}/courses")
-    public Response<List<SingleCourse>> getAllCourse(@PathVariable("user_id") Long userId) {
-        List<SingleCourse> response = courseService.getAllCourses(userId);
-        return new Response<>(201, response);
+    public Response<List<SingleCourse>> getAllCourses(@PathVariable("user_id") Long userId,
+                                                                  @RequestParam(name = "type") String type) {
+        List<SingleCourse> response = null;
+
+        if ("created".equals(type)) {
+            response = courseService.getAllCreatedCoursesByUser(userId);
+        } else if ("relative".equals(type)) {
+            response = courseService.getAllRelativeCourses(userId);
+        } else if ("favorite".equals(type)) {
+            response = courseService.getAllFavoritesCourses(userId);
+        }
+
+        return new Response<>(200, response);
     }
 
     @GetMapping("{user_id}/courses/{course_id}")
     public Response<SingleCourse> getCourse(@PathVariable("user_id") Long userId, @PathVariable("course_id") Long courseId) {
         SingleCourse response = courseService.getCourse(courseId);
-        return new Response<>(201, response);
+        return new Response<>(200, response);
     }
 }

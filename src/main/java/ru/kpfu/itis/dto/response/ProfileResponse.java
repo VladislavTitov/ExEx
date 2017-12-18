@@ -13,6 +13,7 @@ import ru.kpfu.itis.converter.SharedField;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "id",
         "firstname",
         "lastname",
         "age",
@@ -28,6 +29,10 @@ import ru.kpfu.itis.converter.SharedField;
         "created"
 })
 public class ProfileResponse {
+
+    @SharedField(name = "id")
+    @JsonProperty("id")
+    private Long id;
 
     @SharedField(name = "firstname")
     @JsonProperty("firstname")
@@ -121,6 +126,14 @@ public class ProfileResponse {
         this.likes = likes;
         this.finished = finished;
         this.created = created;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @JsonProperty("firstname")

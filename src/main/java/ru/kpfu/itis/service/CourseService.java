@@ -52,7 +52,7 @@ public class CourseService {
         return response;
     }
 
-    public List<SingleCourse> getAllCourses(Long userId) {
+    public List<SingleCourse> getAllCreatedCoursesByUser(Long userId) {
         Optional<User> mayBeUser = userRepo.findById(userId);
         if (!mayBeUser.isPresent()) {
             throw new NoSuchIdException("User with id = " + userId + " doesn't exist!");
@@ -60,6 +60,26 @@ public class CourseService {
         User user = mayBeUser.get();
         List<Course> createdCourses = user.getCreatedCourses();
         List<SingleCourse> response = AnnotationConverter.convertArray(createdCourses, SingleCourse.class);
+        return response;
+    }
+
+    public List<SingleCourse> getAllRelativeCourses(Long userId) {
+        Optional<User> mayBeUser = userRepo.findById(userId);
+        if (!mayBeUser.isPresent()) {
+            throw new NoSuchIdException("User with id = " + userId + " doesn't exist!");
+        }
+        User user = mayBeUser.get();
+        List<SingleCourse> response = AnnotationConverter.convertArray(user.getRelativeCourses(), SingleCourse.class);
+        return response;
+    }
+
+    public List<SingleCourse> getAllFavoritesCourses(Long userId) {
+        Optional<User> mayBeUser = userRepo.findById(userId);
+        if (!mayBeUser.isPresent()) {
+            throw new NoSuchIdException("User with id = " + userId + " doesn't exist!");
+        }
+        User user = mayBeUser.get();
+        List<SingleCourse> response = AnnotationConverter.convertArray(user.getFavoriteCourses(), SingleCourse.class);
         return response;
     }
 
