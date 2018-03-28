@@ -38,9 +38,7 @@ public class RelativeService {
         }
         Course course = mayBeCourse.get();
 
-        course.addStudent(user);
-        Course savedCourse = courseRepo.save(course);
-        user.addRelativeCourse(savedCourse);
+        user.addRelativeCourse(course);
         userRepo.save(user);
     }
 
