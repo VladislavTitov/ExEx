@@ -3,13 +3,14 @@ package ru.kpfu.itis.model;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
+import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "lessons")
-public class Lesson {
+public class Lesson implements Model {
 
     @SharedField(name = "lesson_id")
     @Id
