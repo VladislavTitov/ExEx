@@ -10,6 +10,4 @@ public interface CourseRepo extends JpaRepository<Course, Long> {
 
     List<Course> findAllByOwner(User owner);
 
-    List<Course> findAllByInterestId(Long interestId);
-
 }
