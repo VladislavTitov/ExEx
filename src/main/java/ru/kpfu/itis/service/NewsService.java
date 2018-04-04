@@ -35,7 +35,7 @@ public class NewsService {
         User user = mayBeUser.get();
         List<Course> foundCourses = user.getInterests().stream()
                 .map(Interest::getId)
-                .flatMap(aLong -> courseRepo.findAllByInterestId(aLong).stream())
+                .map(aLong -> new Course())
                 .collect(Collectors.toList());
         List<SingleCourse> response = AnnotationConverter.convertArray(foundCourses, SingleCourse.class);
         return response;

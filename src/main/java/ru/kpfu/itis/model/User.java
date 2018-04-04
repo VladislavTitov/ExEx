@@ -4,6 +4,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
+import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Model {
 
     @SharedField(name = "id")
     @Id

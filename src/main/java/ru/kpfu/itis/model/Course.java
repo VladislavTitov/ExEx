@@ -2,7 +2,9 @@ package ru.kpfu.itis.model;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import ru.kpfu.itis.converter.ListSharedField;
 import ru.kpfu.itis.converter.SharedField;
+import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "courses")
-public class Course {
+public class Course implements Model{
 
     @SharedField(name = "course_id")
     @Id
@@ -29,9 +31,13 @@ public class Course {
     @SharedField(name = "cover")
     private String cover;
 
-    @SharedField(name = "interest_id")
-    @Column(name = "interest_id")
-    private Long interestId;
+    @ListSharedField(name = "interests", genericType = Interest.class)
+    @ManyToMany
+    @JoinTable(name = "courses_interests",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id"))
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    private List<Interest> interests;
 
     @SharedField(name = "students_number")
     @Column(name = "students_number", nullable = false)
@@ -112,13 +118,13 @@ public class Course {
         this.cover = cover;
     }
 
-    public Long getInterestId() {
+    /*public Long getInterestId() {
         return interestId;
     }
 
     public void setInterestId(Long interestId) {
         this.interestId = interestId;
-    }
+    }*/
 
     public Integer getStudentsNumber() {
         return studentsNumber;
@@ -218,6 +224,14 @@ public class Course {
 
     public void setLikersNumber(Integer likersNumber) {
         this.likersNumber = likersNumber;
+    }
+
+    public List<Interest> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<Interest> interests) {
+        this.interests = interests;
     }
 
     @Override

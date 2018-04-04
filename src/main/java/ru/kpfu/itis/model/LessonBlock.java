@@ -1,12 +1,13 @@
 package ru.kpfu.itis.model;
 
 import ru.kpfu.itis.converter.SharedField;
+import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "blocks")
-public class LessonBlock {
+public class LessonBlock implements Model {
 
     @SharedField(name = "block_id")
     @Id

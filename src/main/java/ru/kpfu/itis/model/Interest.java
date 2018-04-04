@@ -3,13 +3,14 @@ package ru.kpfu.itis.model;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import ru.kpfu.itis.converter.SharedField;
+import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "interests")
-public class Interest {
+public class Interest implements Model{
 
     @SharedField(name = "id")
     @Id
@@ -29,8 +30,19 @@ public class Interest {
     @LazyCollection(value = LazyCollectionOption.TRUE)
     private List<User> users;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "courses_interests",
+            joinColumns = @JoinColumn(name = "interest_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @LazyCollection(value = LazyCollectionOption.TRUE)
+    private List<Course> taggedCourses;
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

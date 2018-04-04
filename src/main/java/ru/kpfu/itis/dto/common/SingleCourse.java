@@ -1,13 +1,17 @@
 package ru.kpfu.itis.dto.common;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import ru.kpfu.itis.converter.ListSharedField;
 import ru.kpfu.itis.converter.SharedField;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,7 +20,7 @@ import ru.kpfu.itis.converter.SharedField;
         "title",
         "summary",
         "cover",
-        "interest_id",
+        "interests",
         "students_number"
 })
 public class SingleCourse {
@@ -37,9 +41,9 @@ public class SingleCourse {
     @JsonProperty("cover")
     private String cover;
 
-    @SharedField(name = "interest_id")
-    @JsonProperty("interest_id")
-    private Long interestId;
+    @ListSharedField(name = "interests", genericType = Long.class)
+    @JsonProperty("interests")
+    private List<Long> interests;
 
     @SharedField(name = "students_number")
     @JsonProperty("students_number")
@@ -119,14 +123,6 @@ public class SingleCourse {
         this.cover = cover;
     }
 
-    public Long getInterestId() {
-        return interestId;
-    }
-
-    public void setInterestId(Long interestId) {
-        this.interestId = interestId;
-    }
-
     @JsonProperty("students_number")
     public Integer getStudentsNumber() {
         return studentsNumber;
@@ -153,6 +149,14 @@ public class SingleCourse {
         this.likersNumber = likersNumber;
     }
 
+    public List<Long> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<Long> interests) {
+        this.interests = interests;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -163,4 +167,37 @@ public class SingleCourse {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "SingleCourse{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", summary='" + summary + '\'' +
+                ", cover='" + cover + '\'' +
+                ", interests=" + interests +
+                ", studentsNumber=" + studentsNumber +
+                ", lessonsNumber=" + lessonsNumber +
+                ", likersNumber=" + likersNumber +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SingleCourse that = (SingleCourse) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(cover, that.cover) &&
+                Objects.equals(interests, that.interests) &&
+                Objects.equals(studentsNumber, that.studentsNumber) &&
+                Objects.equals(lessonsNumber, that.lessonsNumber) &&
+                Objects.equals(likersNumber, that.likersNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, summary, cover, interests, studentsNumber, lessonsNumber, likersNumber);
+    }
 }
