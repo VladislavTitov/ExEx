@@ -1,6 +1,7 @@
 package ru.kpfu.itis.dto.request;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import ru.kpfu.itis.converter.ListSharedField;
 import ru.kpfu.itis.converter.SharedField;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,9 +33,9 @@ public class CreateCourseRequest {
     @JsonProperty("cover")
     private String cover;
 
-    @SharedField(name = "interest_id")
-    @JsonProperty("interest_id")
-    private Long interestId;
+    @ListSharedField(name = "interests", genericType = Long.class)
+    @JsonProperty("interests")
+    private List<Long> interests;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -88,12 +90,12 @@ public class CreateCourseRequest {
         this.cover = cover;
     }
 
-    public Long getInterestId() {
-        return interestId;
+    public List<Long> getInterests() {
+        return interests;
     }
 
-    public void setInterestId(Long interestId) {
-        this.interestId = interestId;
+    public void setInterests(List<Long> interests) {
+        this.interests = interests;
     }
 
     @JsonAnyGetter
@@ -105,5 +107,4 @@ public class CreateCourseRequest {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }
