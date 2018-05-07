@@ -1,7 +1,10 @@
 package ru.kpfu.itis.service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kpfu.itis.auth.TokenAuthenticationProvider;
 import ru.kpfu.itis.converter.AnnotationConverter;
 import ru.kpfu.itis.dto.request.SignInRequest;
 import ru.kpfu.itis.dto.request.SignUpRequest;
@@ -13,6 +16,10 @@ import ru.kpfu.itis.model.User;
 import ru.kpfu.itis.repo.TokenRepo;
 import ru.kpfu.itis.repo.UserRepo;
 import ru.kpfu.itis.utils.TokenGenerator;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthService {
@@ -34,10 +41,7 @@ public class AuthService {
         User newUser = AnnotationConverter.convert(request, User.class);
         newUser = userRepo.save(newUser);
 
-        String token = tokenGenerator.generateToken();
-        Token newToken = new Token(token);
-        newToken.setOwner(newUser);
-        tokenRepo.save(newToken);
+        String token = getToken(newUser);
 
         SignUpResponse response = new SignUpResponse(newUser.getId(), newUser.getLogin(), newUser.getPassword(), token);
         return response;
@@ -49,12 +53,28 @@ public class AuthService {
             throw new InvalidCredentialsException("Login or password is incorrect!");
         }
 
-        String token = tokenGenerator.generateToken();
-        Token newToken = new Token(token);
-        newToken.setOwner(foundUser);
-        tokenRepo.save(newToken);
+        String token = getToken(foundUser);
         SignInResponse response = new SignInResponse(foundUser.getId(), token);
         return response;
+    }
+
+    public String getToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "USER");
+        claims.put("user_id", user.getId());
+        claims.put("username", user.getLogin());
+
+        Calendar exp = Calendar.getInstance();
+        exp.add(Calendar.HOUR, 3);
+
+        claims.put("expiration", exp.getTime());
+
+        String token = Jwts.builder()
+                .setExpiration(exp.getTime())
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS512, TokenAuthenticationProvider.SIGN_KEY)
+                .compact();
+        return token;
     }
 
 }
