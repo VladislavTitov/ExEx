@@ -1,7 +1,12 @@
 package ru.kpfu.itis.model;
 
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Parameter;
 import ru.kpfu.itis.converter.ListSharedField;
 import ru.kpfu.itis.converter.SharedField;
 import ru.kpfu.itis.model.base.Model;
@@ -11,19 +16,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Indexed
+@AnalyzerDef(name = "customanalyzer",
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = {
+                        @Parameter(name = "language", value = "Russian")
+                })
+        })
 @Entity
 @Table(name = "courses")
 public class Course implements Model{
 
+    @DocumentId
     @SharedField(name = "course_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
+    @Analyzer(definition = "customanalyzer")
     @SharedField(name = "title")
     @Column(length = 100, nullable = false)
     private String title;
 
+    @Field
+    @Analyzer(definition = "customanalyzer")
     @SharedField(name = "summary")
     @Column(length = 3000, nullable = false)
     private String summary;
