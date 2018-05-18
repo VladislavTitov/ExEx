@@ -12,6 +12,12 @@ public class Token {
 
     private String token;
 
+    @Column(nullable = false, name = "app_id", columnDefinition = "TEXT")
+    private String appId;
+
+    @Column(nullable = false)
+    private long expired;
+
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private User owner;
