@@ -6,7 +6,7 @@
 
     <groupId>ru.kpfu.itis</groupId>
     <artifactId>exex-project</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <packaging>war</packaging>
 
     <dependencies>
