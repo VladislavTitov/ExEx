@@ -15,6 +15,7 @@ import ru.kpfu.itis.converter.SharedField;
 @JsonPropertyOrder({
         "id",
         "name",
+        "number",
         "blocks"
 })
 public class SingleLesson {
@@ -26,6 +27,10 @@ public class SingleLesson {
     @SharedField(name = "name")
     @JsonProperty("name")
     private String name;
+
+    @SharedField(name = "course_number")
+    @JsonProperty("number")
+    private Integer number;
 
     @JsonProperty("blocks")
     private List<Block> blocks = null;
@@ -81,6 +86,16 @@ public class SingleLesson {
     @JsonProperty("blocks")
     public void setBlocks(List<Block> blocks) {
         this.blocks = blocks;
+    }
+
+    @JsonProperty("number")
+    public Integer getNumber() {
+        return number;
+    }
+
+    @JsonProperty("number")
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     @JsonAnyGetter
