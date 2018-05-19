@@ -29,7 +29,7 @@ public class NewsDao {
         }
         TypedQuery<Course> query = entityManager
                 .createQuery(
-                        "select distinct c from Course c join c.interests interest where interest.id in :interests order by c.title",
+                        "select distinct c from Course c join c.interests interest where interest.id in :interests order by c.creationDate",
                         Course.class
                 );
         query.setParameter("interests", user.getInterests().stream().map(Interest::getId).collect(Collectors.toList()));

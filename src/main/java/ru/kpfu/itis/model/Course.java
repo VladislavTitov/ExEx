@@ -12,6 +12,7 @@ import ru.kpfu.itis.converter.SharedField;
 import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +50,10 @@ public class Course implements Model{
 
     @SharedField(name = "cover")
     private String cover;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creation_date")
+    private Date creationDate;
 
     @ListSharedField(name = "interests", genericType = Interest.class)
     @ManyToMany
@@ -251,6 +256,10 @@ public class Course implements Model{
 
     public void setInterests(List<Interest> interests) {
         this.interests = interests;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
     }
 
     @Override

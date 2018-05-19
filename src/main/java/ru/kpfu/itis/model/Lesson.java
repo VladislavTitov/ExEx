@@ -21,6 +21,10 @@ public class Lesson implements Model {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @SharedField(name = "course_number")
+    @Column(nullable = false)
+    private Integer number = 0;
+
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<LessonBlock> blocks;
@@ -68,5 +72,13 @@ public class Lesson implements Model {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }
