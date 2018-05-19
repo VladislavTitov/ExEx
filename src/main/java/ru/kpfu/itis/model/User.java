@@ -7,10 +7,7 @@ import ru.kpfu.itis.converter.SharedField;
 import ru.kpfu.itis.model.base.Model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -94,7 +91,7 @@ public class User implements Model {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "interest_id"))
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    private List<Interest> interests;
+    private List<Interest> interests = Collections.emptyList();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
