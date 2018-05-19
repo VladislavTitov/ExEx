@@ -39,7 +39,7 @@ public class PersistenceConfig {
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL94Dialect");
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+        jpaProperties.put("hibernate.hbm2ddl.auto", "create");
         jpaProperties.put("hibernate.search.default.directory_provider", "filesystem");
         jpaProperties.put("hibernate.search.default.indexBase", "/var/tmp/exex_lucene_index");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
